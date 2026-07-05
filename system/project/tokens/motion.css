@@ -1,0 +1,39 @@
+/* ============================================================
+   MOTION  —  calm, no bounce. Gentle fades + soft upward drift.
+   ------------------------------------------------------------
+   Entrances rise a few px while fading in. Interactions settle
+   with an ease-out curve. Nothing overshoots; the tone is quiet.
+   Duration & easing tokens are marked `@kind other` (not a
+   colour/space/type scale) so the indexer classifies them.
+   ============================================================ */
+
+:root {
+  --dur-instant: 90ms;   /* @kind other */
+  --dur-fast:    150ms;  /* @kind other */
+  --dur-base:    240ms;  /* @kind other */
+  --dur-slow:    380ms;  /* @kind other */
+  --dur-slower:  680ms;  /* @kind other */
+
+  --ease-standard: cubic-bezier(0.22, 0.61, 0.36, 1);  /* @kind other */
+  --ease-out-soft: cubic-bezier(0.16, 1, 0.30, 1);     /* @kind other */
+  --ease-in-out:   cubic-bezier(0.45, 0, 0.20, 1);     /* @kind other */
+  --ease-in:       cubic-bezier(0.55, 0, 0.85, 0.30);  /* @kind other */
+
+  /* Interaction deltas (documented conventions) */
+  --press-scale:  0.98;    /* @kind other */
+  --lift-y:      -2px;     /* @kind spacing */
+  --enter-y:      8px;     /* @kind spacing */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-instant: 0ms;  /* @kind other */
+    --dur-fast:    0ms;  /* @kind other */
+    --dur-base:    0ms;  /* @kind other */
+    --dur-slow:    0ms;  /* @kind other */
+    --dur-slower:  0ms;  /* @kind other */
+    --enter-y:     0px;  /* @kind spacing */
+    --lift-y:      0px;  /* @kind spacing */
+    --press-scale: 1;    /* @kind other */
+  }
+}

@@ -1,0 +1,22 @@
+<!-- @dsCard group="Spacing" viewport="700x170" name="Radius" subtitle="Soft corners — inputs/buttons md, cards lg, space card xl" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--surface-page); font-family: var(--font-sans); }
+  .row { display: flex; gap: 16px; align-items: flex-end; }
+  .item { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .sq { width: 74px; height: 60px; background: var(--surface-card); border: 1.5px solid var(--border-strong);
+    box-shadow: var(--shadow-sm); }
+  .name { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+  .val { font-size: 10px; color: var(--text-muted); }
+</style></head>
+<body>
+<div class="row" id="row"></div>
+<script>
+  const radii = [['xs','6'],['sm','10'],['md','14'],['lg','20'],['xl','28'],['2xl','36'],['pill','999']];
+  document.getElementById('row').innerHTML = radii.map(([t,px]) =>
+    `<div class="item"><div class="sq" style="border-radius:var(--radius-${t})"></div>
+     <div class="name">${t}</div><div class="val">${px==='999'?'pill':px+'px'}</div></div>`).join('');
+</script>
+</body></html>

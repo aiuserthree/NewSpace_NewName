@@ -1,0 +1,68 @@
+/* ============================================================
+   BASE  —  light element defaults built on the tokens.
+   Kept intentionally small: resets, document defaults, and a
+   few text/utility helpers. Components style themselves inline
+   via the custom properties; this is just the substrate.
+   ============================================================ */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  letter-spacing: var(--tracking-normal);
+  color: var(--text-primary);
+  background-color: var(--surface-page);
+  font-weight: var(--weight-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  word-break: keep-all;       /* keep Korean words intact at wrap */
+  overflow-wrap: break-word;
+}
+
+/* Headings default to the display serif; components can override */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  font-weight: var(--weight-bold);
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-display);
+  color: var(--text-primary);
+  margin: 0;
+}
+h5, h6 { margin: 0; font-weight: var(--weight-semibold); }
+p { margin: 0; }
+
+a { color: var(--text-accent); text-decoration: none; }
+a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+button { font-family: inherit; }
+
+::selection { background: var(--clay-100); color: var(--clay-800); }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+img { max-width: 100%; display: block; }
+
+/* --- Small text / layout helpers (optional) ----------------- */
+.ds-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--text-accent);
+}
+.ds-serif  { font-family: var(--font-display); }
+.ds-sans   { font-family: var(--font-sans); }
+.ds-muted  { color: var(--text-muted); }
+.ds-numeric { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum'; }

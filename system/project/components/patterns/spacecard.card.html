@@ -1,0 +1,42 @@
+<!-- @dsCard group="Components" viewport="700x640" name="SpaceCard" subtitle="Signature per-space naming block (image + serif name + inputs)" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); display: flex; justify-content: center; }
+  .stage { display: grid; grid-template-columns: 400px 400px; gap: 24px; align-items: start; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { SpaceCard } = window.DesignSystem_60a1b7;
+  function Demo() {
+    const [a, setA] = React.useState('');
+    const [b, setB] = React.useState('');
+    return (
+      <div className="stage">
+        <SpaceCard
+          numeral="①" name="본당" kind="신축 · 조감도"
+          imageLabel="본당 조감도" imageSublabel="이미지를 준비 중이에요"
+          description="새로 지어질 본당의 이름을 상상해 보세요. 우리 공동체가 오래 부를 이름이 됩니다."
+          requiredValue={a} optionalValue={b}
+          onFieldChange={(slot, v) => (slot === 'required' ? setA(v) : setB(v))} />
+        <SpaceCard
+          numeral="②" name="소예배실" kind="사진" readOnly
+          description="청년과 청소년을 위한 액티브한 공간입니다."
+          requiredValue="빛으로" optionalValue="청년마루" />
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

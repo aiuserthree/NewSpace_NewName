@@ -1,0 +1,14 @@
+/* ============================================================
+   공간 이름 공모전 — Design System
+   Global entry point. Consumers link THIS file.
+   Keep this file a list of @import lines only.
+   ============================================================ */
+
+@import url('./tokens/fonts.css');
+@import url('./tokens/colors.css');
+@import url('./tokens/typography.css');
+@import url('./tokens/spacing.css');
+@import url('./tokens/radius.css');
+@import url('./tokens/shadow.css');
+@import url('./tokens/motion.css');
+@import url('./tokens/base.css');

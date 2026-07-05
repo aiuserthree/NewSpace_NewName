@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · 신청자 정보</title>
+<link rel="stylesheet" href="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/styles.css" />
+<link rel="stylesheet" href="assets/site.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+/* P1 — 신청자 정보 입력. 이름 · 소속 · 연락처를 받고, 번호를 고유 키로
+   신규/기존을 판별한다. 개인정보 수집·이용 동의(필수) 후에만 진행된다.
+   신규 → P2, 기존(중복) → 안내 + P4 유도. */
+const { Button, TextField, Notice, SectionHeader, Icon } = window.DesignSystem_60a1b7;
+
+const TERMS = [
+  { k: '수집 항목', v: '이름, 소속, 휴대폰 번호' },
+  { k: '수집·이용 목적', v: '공모 참여자 본인 확인, 중복 신청 방지, 제출 내용 조회, 결과 및 후속 일정 안내' },
+  { k: '보유·이용 기간', v: '공모 종료 후 3개월 이내 지체 없이 파기' },
+  { k: '동의 거부 권리', v: '동의를 거부하실 수 있어요. 다만 본인 확인이 어려워 공모 참여가 제한될 수 있어요.' },
+];
+
+/* 약관(개인정보 수집·이용 동의) 전문 — 모바일은 바텀시트, 데스크톱은 다이얼로그 */
+function TermsModal({ onClose, onAgree }) {
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <div className="modal" role="dialog" aria-modal="true" aria-labelledby="terms-title" onClick={onClose}>
+      <div className="modal__panel" onClick={(e) => e.stopPropagation()}>
+        <div className="modal__head">
+          <h2 id="terms-title" className="modal__title">개인정보 수집·이용 동의</h2>
+          <button type="button" className="iconbtn" onClick={onClose} aria-label="닫기">
+            <Icon name="x" size={20} />
+          </button>
+        </div>
+        <div className="modal__body">
+          <p className="modal__lead">
+            영암교회는 공간 이름 공모 참여에 필요한 최소한의 정보를 아래와 같이 수집·이용합니다.
+          </p>
+          <dl className="terms">
+            {TERMS.map((t) => (
+              <div className="terms__row" key={t.k}>
+                <dt className="terms__k">{t.k}</dt>
+                <dd className="terms__v">{t.v}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <div className="modal__foot">
+          <Button fullWidth onClick={onAgree}>동의하고 닫기</Button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function InfoPage() {
+  const [name, setName] = React.useState('');
+  const [affiliation, setAffiliation] = React.useState('');
+  const [phone, setPhone] = React.useState('');
+  const [agreed, setAgreed] = React.useState(false);
+  const [err, setErr] = React.useState({});
+  const [dup, setDup] = React.useState(null);
+  const [termsOpen, setTermsOpen] = React.useState(false);
+
+  const clearAgree = () => setErr((p) => ({ ...p, agree: undefined }));
+
+  const submit = () => {
+    const digits = phone.replace(/\D/g, '');
+    const e = {};
+    if (!name.trim()) e.name = '이름을 입력해 주세요';
+    if (!/^01\d{8,9}$/.test(digits)) e.phone = '올바른 핸드폰 번호를 입력해 주세요 (010으로 시작)';
+    if (!agreed) e.agree = '개인정보 수집·이용에 동의해 주세요';
+    setErr(e);
+    if (Object.keys(e).filter((k) => e[k]).length) return;
+
+    const subs = Contest.loadSubs();
+    if (subs[digits]) {                       // 기존 신청자 → 중복 안내
+      Contest.setJSON(Contest.CUR_KEY, subs[digits]);
+      setDup(subs[digits]);
+      return;
+    }
+    Contest.setApplicant({                    // 신규 → 임시 보관 후 P2
+      name: name.trim(), affiliation: affiliation.trim(), phone: digits, agreedAt: Date.now(),
+    });
+    window.location.href = '03-submit.html';
+  };
+
+  return (
+    <div className="site">
+      <SiteHeader back="01-intro.html" steps={['신청자 정보', '이름 제출']} current={0} />
+      <main className="site__main">
+        <div className="col col--form">
+          <SectionHeader eyebrow="STEP 1" title="먼저, 참여자 정보를 알려주세요"
+            description="핸드폰 번호는 중복 확인과 본인 조회에만 사용돼요." />
+
+          <div className="form">
+            <TextField label="이름" required placeholder="이름을 입력해 주세요"
+              value={name} error={err.name}
+              onChange={(e) => setName(e.target.value)} />
+
+            <TextField label="소속" optional placeholder="예) 청년부 · 3구역"
+              hint="같은 이름이 있을 때 구분하는 데 도움이 돼요"
+              value={affiliation}
+              onChange={(e) => setAffiliation(e.target.value)} />
+
+            <TextField label="연락처" required type="tel" inputMode="numeric" prefix="phone"
+              placeholder="010-0000-0000" value={phone} error={err.phone}
+              hint="본인 확인용으로만 사용돼요"
+              onChange={(e) => { setPhone(e.target.value); if (dup) setDup(null); }} />
+
+            {dup && (
+              <Notice variant="info" title="이미 신청하신 분입니다"
+                action={
+                  <Button size="sm" variant="soft" iconLeft="phone"
+                    href={`05-lookup.html?phone=${dup.phone}`}>내용 확인하기</Button>
+                }>
+                같은 번호로 이미 참여하셨어요. 제출한 내용을 확인할 수 있어요.
+              </Notice>
+            )}
+
+            <div className={'consent' + (err.agree ? ' consent--error' : '')}>
+              <label className="checkrow" data-checked={agreed}>
+                <input type="checkbox" checked={agreed}
+                  onChange={(e) => { setAgreed(e.target.checked); if (e.target.checked) clearAgree(); }} />
+                <span className="checkrow__box"><Icon name="check" size={14} /></span>
+                <span className="checkrow__text">
+                  <span className="checkrow__title">개인정보 수집·이용에 동의합니다 <em>필수</em></span>
+                  <span className="checkrow__desc">이름·소속·연락처를 공모 참여 확인 용도로만 수집·이용해요.</span>
+                </span>
+              </label>
+              <button type="button" className="linkbtn" onClick={() => setTermsOpen(true)}>
+                개인정보 수집·이용 전문 보기<Icon name="chevron-right" size={16} />
+              </button>
+            </div>
+            {err.agree && (
+              <p className="field-error"><Icon name="alert-circle" size={13} />{err.agree}</p>
+            )}
+          </div>
+
+          <div className="actionbar">
+            <Button fullWidth iconRight="arrow-right" onClick={submit}>다음</Button>
+          </div>
+        </div>
+      </main>
+
+      {termsOpen && (
+        <TermsModal
+          onClose={() => setTermsOpen(false)}
+          onAgree={() => { setAgreed(true); clearAgree(); setTermsOpen(false); }} />
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<InfoPage />);
+</script>
+</body>
+</html>

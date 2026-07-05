@@ -1,0 +1,14 @@
+/* ============================================================
+   RADIUS  —  soft, friendly, never fully pill except tags/CTA
+   ============================================================ */
+
+:root {
+  --radius-xs:   6px;
+  --radius-sm:   10px;
+  --radius-md:   14px;   /* inputs, buttons  */
+  --radius-lg:   20px;   /* cards            */
+  --radius-xl:   28px;   /* hero / space card */
+  --radius-2xl:  36px;
+  --radius-pill: 999px;  /* badges, chips    */
+  --radius-circle: 50%;
+}

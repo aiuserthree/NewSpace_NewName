@@ -1,0 +1,24 @@
+/* ============================================================
+   ELEVATION  —  soft, warm-tinted shadows (low & diffuse)
+   ------------------------------------------------------------
+   Shadows are tinted with the deep stone hue, never neutral
+   grey, so cards feel warm as they lift off the paper.
+   ============================================================ */
+
+:root {
+  --shadow-xs:  0 1px 2px rgba(52, 40, 22, 0.06);
+  --shadow-sm:  0 2px 6px rgba(52, 40, 22, 0.07),
+                0 1px 2px rgba(52, 40, 22, 0.05);
+  --shadow-md:  0 8px 20px rgba(52, 40, 22, 0.10),
+                0 2px 6px rgba(52, 40, 22, 0.06);
+  --shadow-lg:  0 18px 42px rgba(52, 40, 22, 0.13),
+                0 5px 14px rgba(52, 40, 22, 0.07);
+  --shadow-xl:  0 32px 70px rgba(52, 40, 22, 0.17),
+                0 10px 24px rgba(52, 40, 22, 0.09);
+
+  /* Inset for sunken trays / read-only fields */
+  --shadow-inset: inset 0 1px 3px rgba(52, 40, 22, 0.08);
+
+  /* Focus ring (paired with --focus-ring colour token) */
+  --shadow-focus: 0 0 0 4px var(--focus-ring);
+}

@@ -1,0 +1,26 @@
+<!-- @dsCard group="Type" viewport="700x400" name="Type Scale" subtitle="11-step scale — mobile-first, 24px+ for headings" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--surface-page); font-family: var(--font-sans); }
+  .row { display: flex; align-items: baseline; gap: 16px; padding: 5px 0; border-bottom: 1px solid var(--border-subtle); }
+  .row:last-child { border-bottom: none; }
+  .tok { width: 150px; flex-shrink: 0; font-size: 11px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .tok b { color: var(--text-secondary); font-weight: 600; }
+  .demo { color: var(--text-primary); letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+</style></head>
+<body>
+<div id="list"></div>
+<script>
+  const sizes = [
+    ['--text-5xl','60','hero'],['--text-4xl','48','display'],['--text-3xl','38','h1'],
+    ['--text-2xl','30','h2'],['--text-xl','24','h3'],['--text-lg','20','lead'],
+    ['--text-md','17','body+'],['--text-base','16','body'],['--text-sm','14','helper'],
+    ['--text-xs','13','caption'],['--text-2xs','12','micro']
+  ];
+  document.getElementById('list').innerHTML = sizes.map(([t,px,role]) =>
+    `<div class="row"><div class="tok"><b>${t.replace('--text-','')}</b> · ${px}px · ${role}</div>
+     <div class="demo" style="font-size:var(${t})">이름을 함께 Aa</div></div>`).join('');
+</script>
+</body></html>

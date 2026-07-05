@@ -1,0 +1,20 @@
+<!-- @dsCard group="Brand" viewport="700x180" name="Elevation" subtitle="Soft, warm-tinted shadows — never neutral grey" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 26px 24px; background: var(--surface-page); font-family: var(--font-sans); }
+  .row { display: flex; gap: 22px; }
+  .item { display: flex; flex-direction: column; gap: 12px; align-items: center; }
+  .card { width: 96px; height: 66px; background: var(--surface-card); border-radius: var(--radius-lg); }
+  .name { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+</style></head>
+<body>
+<div class="row" id="row"></div>
+<script>
+  const shadows = ['xs','sm','md','lg','xl'];
+  document.getElementById('row').innerHTML = shadows.map(s =>
+    `<div class="item"><div class="card" style="box-shadow:var(--shadow-${s})"></div>
+     <div class="name">shadow-${s}</div></div>`).join('');
+</script>
+</body></html>

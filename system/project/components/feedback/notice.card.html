@@ -1,0 +1,39 @@
+<!-- @dsCard group="Components" viewport="700x360" name="Notice" subtitle="Inline message banners — info · success · warning · danger" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .col { display: grid; gap: 12px; max-width: 620px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Notice, Button } = window.DesignSystem_60a1b7;
+  function Demo() {
+    return (
+      <div className="col">
+        <Notice variant="info" title="이미 신청하신 분입니다"
+          action={<Button size="sm" variant="soft" iconLeft="phone">내용 확인하기</Button>}>
+          같은 번호로 이미 참여하셨어요. 아래에서 제출한 내용을 확인할 수 있어요.
+        </Notice>
+        <Notice variant="success" title="제출이 완료되었습니다">참여해 주셔서 감사합니다!</Notice>
+        <Notice variant="warning" title="아직 입력하지 않은 공간이 있어요">각 공간별 1개는 필수예요.</Notice>
+        <Notice variant="danger" title="번호 형식을 확인해 주세요" onClose={() => {}}>
+          010으로 시작하는 휴대폰 번호를 입력해 주세요.
+        </Notice>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

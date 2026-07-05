@@ -1,0 +1,21 @@
+<!-- @dsCard group="Spacing" viewport="700x200" name="Layout Tokens" subtitle="Mobile column, page gutter, touch-target heights" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 20px 24px; background: var(--surface-page); font-family: var(--font-sans); color: var(--text-primary); }
+  .stack { display: flex; flex-direction: column; gap: 14px; }
+  .line { display: flex; align-items: center; gap: 14px; }
+  .tok { width: 168px; flex-shrink: 0; font-size: 11px; color: var(--text-muted); }
+  .tok b { color: var(--text-secondary); font-weight: 600; }
+  .col { height: 22px; background: var(--clay-100); border: 1px dashed var(--clay-400); border-radius: 6px; }
+  .fld { height: var(--field-height); width: 220px; background: var(--surface-card); border: 1.5px solid var(--border-default);
+    border-radius: var(--radius-md); display: flex; align-items: center; padding: 0 16px; font-size: 13px; color: var(--text-muted); }
+</style></head>
+<body>
+<div class="stack">
+  <div class="line"><div class="tok"><b>--content-max</b> · 440px</div><div class="col" style="width:440px"></div></div>
+  <div class="line"><div class="tok"><b>--gutter-page</b> · 20px</div><div class="col" style="width:20px"></div></div>
+  <div class="line"><div class="tok"><b>--field-height</b> · 52px</div><div class="fld">터치 타깃 52px</div></div>
+</div>
+</body></html>

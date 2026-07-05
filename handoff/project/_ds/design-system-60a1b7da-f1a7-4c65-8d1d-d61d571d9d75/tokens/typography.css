@@ -1,0 +1,50 @@
+/* ============================================================
+   TYPOGRAPHY  —  Gowun Batang (display serif) + Pretendard (sans)
+   ------------------------------------------------------------
+   Korean-first. Serif is reserved for the human, poetic moments
+   (hero headline, space names, quotes). Everything functional is
+   Pretendard. Korean body copy runs a generous line-height and a
+   whisper of negative tracking; display tightens further.
+   ============================================================ */
+
+:root {
+  /* Families */
+  --font-sans:  'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont,
+                'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+  --font-serif: 'Gowun Batang', 'Nanum Myeongjo', 'Apple SD Gothic Neo', serif;
+  --font-display: var(--font-serif);
+  --font-mono:  ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Weights */
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* Type scale (mobile-first, px) */
+  --text-2xs: 0.75rem;    /* 12 — micro labels */
+  --text-xs:  0.8125rem;  /* 13 — captions      */
+  --text-sm:  0.875rem;   /* 14 — helper / meta */
+  --text-base:1rem;       /* 16 — body          */
+  --text-md:  1.0625rem;  /* 17 — comfy body    */
+  --text-lg:  1.25rem;    /* 20 — lead / label  */
+  --text-xl:  1.5rem;     /* 24 — h3            */
+  --text-2xl: 1.875rem;   /* 30 — h2            */
+  --text-3xl: 2.375rem;   /* 38 — h1            */
+  --text-4xl: 3rem;       /* 48 — display       */
+  --text-5xl: 3.75rem;    /* 60 — hero          */
+
+  /* Line height */
+  --leading-none:    1;
+  --leading-tight:   1.18;   /* display / headlines */
+  --leading-snug:    1.34;   /* subheads            */
+  --leading-normal:  1.6;    /* UI text             */
+  --leading-relaxed: 1.78;   /* long-form KR body   */
+
+  /* Letter spacing (Korean prefers slight negative) */
+  --tracking-display: -0.022em;
+  --tracking-tight:   -0.014em;
+  --tracking-normal:  -0.006em;
+  --tracking-wide:     0.04em;   /* eyebrows / caps */
+  --tracking-wider:    0.14em;
+}

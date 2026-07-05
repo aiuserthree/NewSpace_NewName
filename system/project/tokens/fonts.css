@@ -1,0 +1,25 @@
+/* ============================================================
+   FONTS  —  webfont declarations
+   ------------------------------------------------------------
+   No fonts were supplied with the brief, so two typefaces were
+   selected and loaded from CDN (flagged in readme.md):
+
+     · Pretendard   — primary UI / body sans (modern KR standard)
+     · Gowun Batang — display serif for headlines & space names
+                      (곱은바탕 — a soft, warm myeongjo)
+
+   Gowun Batang is pulled from Google Fonts (auto subsetting).
+   Pretendard is declared explicitly against a pinned jsDelivr
+   build so the whole variable weight range ships to consumers.
+   Replace these with licensed / self-hosted files when ready.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&display=swap');
+
+@font-face {
+  font-family: 'Pretendard Variable';
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/woff2/PretendardVariable.woff2') format('woff2-variations');
+}

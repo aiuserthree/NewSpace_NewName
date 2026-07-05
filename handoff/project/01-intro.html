@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · 인트로</title>
+<link rel="stylesheet" href="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/styles.css" />
+<link rel="stylesheet" href="assets/site.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+/* P0 — 인트로 / 랜딩. 공모 취지·대상 공간·참여 방법을 안내하고
+   [참여 시작]으로 P1(신청자 정보)로 이동한다. */
+const { Button, ImageFrame } = window.DesignSystem_60a1b7;
+
+const INTRO_SPACES = [
+  { n: '①', name: '본당',       kind: '신축 · 조감도', line: '새로 지어질 예배의 중심 공간' },
+  { n: '②', name: '소예배실',   kind: '사진',          line: '청년·청소년을 위한 액티브한 공간' },
+  { n: '③', name: '새가족부실', kind: '사진',          line: '처음 오신 분들을 맞이하는 공간' },
+];
+
+function IntroPage() {
+  return (
+    <div className="site">
+      <SiteHeader />
+      <main className="site__main">
+        <div className="col col--intro">
+          <section className="intro">
+            <div className="intro__text">
+              <div className="ds-eyebrow">함께 짓다</div>
+              <h1 className="intro__title">우리 공간의 이름을<br />함께 지어주세요</h1>
+              <p className="intro__lead">
+                새로 짓고 다듬은 세 공간의 이름을 교우 여러분과 함께 짓습니다.
+                잠깐이면 참여할 수 있어요.
+              </p>
+              <div className="intro__cta">
+                <Button fullWidth iconRight="arrow-right" href="02-info.html">참여 시작</Button>
+              </div>
+            </div>
+            <div className="intro__media">
+              <ImageFrame ratio="4 / 3" radius="xl" scrim
+                label="본당 조감도" sublabel="이미지를 준비 중이에요">
+                <span className="intro__herocap">공모 대상 · 세 개의 공간</span>
+              </ImageFrame>
+            </div>
+          </section>
+
+          <section className="spaces-section">
+            <div className="spaces-head">
+              <span className="ds-eyebrow">공모 대상 공간</span>
+              <h2 className="spaces-title">이름을 기다리는 세 공간</h2>
+            </div>
+            <div className="spaces">
+              {INTRO_SPACES.map((s) => (
+                <div className="spaceitem" key={s.name}>
+                  <span className="spaceitem__n">{s.n}</span>
+                  <div className="spaceitem__body">
+                    <div className="spaceitem__name">{s.name}</div>
+                    <div className="spaceitem__line">{s.line}</div>
+                  </div>
+                  <span className="spaceitem__kind">{s.kind}</span>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <div className="actionbar actionbar--intro">
+            <Button fullWidth iconRight="arrow-right" href="02-info.html">참여 시작</Button>
+            <p className="footnote">1인당 최대 2개 제안 · 약 1분 소요</p>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<IntroPage />);
+</script>
+</body>
+</html>

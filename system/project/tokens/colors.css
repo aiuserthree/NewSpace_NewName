@@ -1,0 +1,97 @@
+/* ============================================================
+   COLORS  —  warm neutral foundation + single clay accent
+   ------------------------------------------------------------
+   Philosophy: the photographs (space renderings & rooms) carry
+   the colour. The interface stays a warm, quiet paper backdrop
+   with ONE terracotta accent for anything actionable. Neutrals
+   are warm (hue ~65) so nothing reads cold next to imagery.
+   ============================================================ */
+
+:root {
+  /* --- Warm neutral ramp (stone / taupe) --------------------- */
+  --stone-50:  #F8F3EB;
+  --stone-100: #EFE7DA;
+  --stone-150: #E7DCCB;
+  --stone-200: #DDCFBA;
+  --stone-300: #CBB99E;
+  --stone-400: #B09A79;
+  --stone-500: #8B7A5E;   /* muted text */
+  --stone-600: #6B5D46;   /* secondary text */
+  --stone-700: #4C4232;   /* strong secondary */
+  --stone-800: #322B20;
+  --stone-900: #221D15;
+
+  /* --- Paper / ink ------------------------------------------- */
+  --paper:        #F7F1E8;   /* page background — warm ivory   */
+  --paper-deep:   #F1E9DA;   /* alt section band               */
+  --surface:      #FFFDF9;   /* raised card — warm white       */
+  --surface-sunken:#EFE6D6;  /* inset tray / read-only field   */
+  --ink:          #241E14;   /* primary text — warm near-black */
+  --ink-soft:     #574B39;
+
+  /* --- Clay accent (terracotta) ------------------------------ */
+  --clay-50:  #FBEDE4;
+  --clay-100: #F5D8C6;
+  --clay-200: #EBB498;
+  --clay-300: #DD8F6C;
+  --clay-400: #CE7149;
+  --clay-500: #BC5C34;   /* PRIMARY accent */
+  --clay-600: #A44C28;   /* hover  */
+  --clay-700: #833A1E;   /* active / press */
+  --clay-800: #5F2C18;
+
+  /* --- Semantic hues (warm-tuned) ---------------------------- */
+  --olive-100: #E9EDD9;   --olive-500: #667538;   --olive-700: #48521F;  /* success / growth */
+  --amber-100: #F7E9CC;   --amber-500: #C58A2A;   --amber-700: #935F17;  /* warning */
+  --brick-100: #F7DED6;   --brick-500: #C1493A;   --brick-700: #90291F;  /* danger  */
+
+  /* ============================================================
+     SEMANTIC ALIASES  —  what consumers should reference
+     ============================================================ */
+
+  /* Text */
+  --text-primary:   var(--ink);
+  --text-secondary: var(--stone-600);
+  --text-muted:     var(--stone-500);
+  --text-disabled:  var(--stone-400);
+  --text-accent:    var(--clay-600);
+  --text-on-accent: #FFF7EF;
+
+  /* Surfaces */
+  --surface-page:    var(--paper);
+  --surface-band:    var(--paper-deep);
+  --surface-card:    var(--surface);
+  --surface-inset:   var(--surface-sunken);
+  --surface-hover:   rgba(60, 45, 22, 0.045);
+  --surface-active:  rgba(60, 45, 22, 0.085);
+  --surface-accent-soft: var(--clay-50);
+  --scrim:           rgba(34, 27, 17, 0.46);
+
+  /* Borders */
+  --border-subtle:  var(--stone-150);
+  --border-default: var(--stone-200);
+  --border-strong:  var(--stone-300);
+  --border-accent:  var(--clay-500);
+
+  /* Accent / interaction */
+  --accent:         var(--clay-500);
+  --accent-hover:   var(--clay-600);
+  --accent-active:  var(--clay-700);
+  --accent-soft:    var(--clay-50);
+  --accent-border:  var(--clay-200);
+  --focus-ring:     color-mix(in oklab, var(--clay-500) 34%, transparent);
+
+  /* Semantic: surface + foreground pairs */
+  --success:         var(--olive-500);
+  --success-fg:      var(--olive-700);
+  --success-surface: var(--olive-100);
+  --warning:         var(--amber-500);
+  --warning-fg:      var(--amber-700);
+  --warning-surface: var(--amber-100);
+  --danger:          var(--brick-500);
+  --danger-fg:       var(--brick-700);
+  --danger-surface:  var(--brick-100);
+  --info:            var(--clay-600);      /* informational = calm clay */
+  --info-fg:         var(--clay-700);
+  --info-surface:    var(--clay-50);
+}

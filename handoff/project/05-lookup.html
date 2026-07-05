@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · 내 제출 내용</title>
+<link rel="stylesheet" href="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/styles.css" />
+<link rel="stylesheet" href="assets/site.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+/* P4 — 내 제출 내용 조회 (읽기 전용). 동일 번호 재접근 신청자에게
+   본인이 제출한 내용을 수정 불가 상태로 보여준다. */
+const { Button, TextField, Badge, Card, Notice } = window.DesignSystem_60a1b7;
+
+const LOOKUP_SPACES = [
+  { key: 'main',   n: '①', name: '본당' },
+  { key: 'chapel', n: '②', name: '소예배실' },
+  { key: 'family', n: '③', name: '새가족부실' },
+];
+
+function LookupPage() {
+  const sub = React.useMemo(() => {
+    const q = new URLSearchParams(window.location.search).get('phone');
+    const subs = Contest.loadSubs();
+    if (q && subs[q]) return subs[q];
+    const cur = Contest.getJSON(Contest.CUR_KEY);
+    if (cur && cur.values) return cur;
+    return Contest.SEED['01012345678'];        // 단독 접근 데모 폴백
+  }, []);
+
+  if (!sub || !sub.values) {
+    return (
+      <div className="site">
+        <SiteHeader back="01-intro.html" />
+        <main className="site__main">
+          <div className="col col--lookup">
+            <div className="ds-eyebrow">내 제출 내용</div>
+            <h1 className="lookup__title">조회할 내용이 없습니다</h1>
+            <Notice variant="info" title="제출 내역을 찾을 수 없어요">
+              해당 번호로 제출된 내용이 없어요. 처음 화면에서 참여를 시작해 주세요.
+            </Notice>
+            <div className="actionbar">
+              <Button fullWidth href="02-info.html">참여하러 가기</Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
+  return (
+    <div className="site">
+      <SiteHeader back="01-intro.html" />
+      <main className="site__main">
+        <div className="col col--lookup">
+          <div className="ds-eyebrow">내 제출 내용</div>
+          <h1 className="lookup__title">제출하신 내용이에요</h1>
+          <div className="lookup__meta">
+            <Badge variant="success" icon="check">제출 완료</Badge>
+            <span className="lookup__phone">
+              {[sub.name, sub.affiliation, Contest.fmtPhone(sub.phone)].filter(Boolean).join(' · ')}
+            </span>
+          </div>
+
+          <div className="lookup__list">
+            {LOOKUP_SPACES.map((sp) => {
+              const v = (sub.values && sub.values[sp.key]) || {};
+              return (
+                <Card key={sp.key} variant="flat" padding="md" className="lookupcard">
+                  <div className="lookupcard__head">
+                    <span className="lookupcard__n">{sp.n}</span>{sp.name}
+                  </div>
+                  <div className="lookupcard__names">
+                    <TextField label="이름" readOnly value={v.required || '—'} />
+                    {v.optional
+                      ? <TextField label="추가 이름" readOnly value={v.optional} />
+                      : null}
+                  </div>
+                </Card>
+              );
+            })}
+          </div>
+
+          <p className="footnote">제출 내용은 수정할 수 없어요. 변경이 필요하면 담당자에게 문의해 주세요.</p>
+
+          <div className="actionbar">
+            <Button fullWidth variant="secondary" href="01-intro.html">닫기</Button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<LookupPage />);
+</script>
+</body>
+</html>

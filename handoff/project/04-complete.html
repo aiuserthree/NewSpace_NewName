@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · 제출 완료</title>
+<link rel="stylesheet" href="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/styles.css" />
+<link rel="stylesheet" href="assets/site.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+/* P3 — 제출 완료. 완료 안내 + 후속(2차 오프라인 스티커 투표) 일정 안내.
+   재제출 경로는 노출하지 않는다. */
+const { Button, Notice, Icon } = window.DesignSystem_60a1b7;
+
+function CompletePage() {
+  const cur = React.useMemo(() => Contest.getJSON(Contest.CUR_KEY), []);
+  const name = (cur && cur.name) ? cur.name : '';
+
+  return (
+    <div className="site">
+      <SiteHeader />
+      <main className="site__main">
+        <div className="col col--complete">
+          <div className="complete">
+            <div className="complete__mark"><Icon name="check-circle" size={40} /></div>
+            <h1 className="complete__title">제출이 완료되었습니다</h1>
+            <p className="complete__sub">
+              참여해 주셔서 감사합니다{name ? `, ${name}님` : ''}!
+            </p>
+            <Notice variant="info" title="다음 일정 안내">
+              제안해 주신 이름 중 상위 후보는 추후 현장 스티커 투표로 최종 결정됩니다.
+            </Notice>
+          </div>
+
+          <div className="actionbar">
+            <Button fullWidth variant="secondary" iconLeft="phone" href="05-lookup.html">
+              내 제출 내용 보기
+            </Button>
+            <Button fullWidth variant="ghost" href="01-intro.html">처음으로</Button>
+          </div>
+        </div>
+      </main>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<CompletePage />);
+</script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!-- @dsCard group="Contest App" viewport="900x720" name="공모전 앱 · 인터랙티브 플로우" subtitle="Intro → 정보 입력 → 이름 제출 → 완료 · 중복 시 조회" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · Contest App</title>
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  html, body { margin: 0; }
+  #root { min-height: 100vh; }
+
+  /* ---- stage / device ---- */
+  .stage { min-height: 100vh; box-sizing: border-box; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: var(--space-5); padding: var(--space-7) var(--space-5);
+    background: radial-gradient(120% 78% at 50% 0%, var(--paper) 0%, var(--paper-deep) 66%, #E9DFCD 100%); }
+  .phone { width: 380px; height: min(760px, 90vh); background: #1b1610; border-radius: 46px;
+    padding: 11px; flex-shrink: 0;
+    box-shadow: 0 40px 80px rgba(38,28,15,0.32), 0 12px 28px rgba(38,28,15,0.18), inset 0 0 0 1.5px rgba(255,255,255,0.06); }
+  .phone__screen { width: 100%; height: 100%; background: var(--surface-page); border-radius: 36px;
+    overflow: hidden; display: flex; flex-direction: column; position: relative; }
+  .statusbar { flex-shrink: 0; height: 42px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px 0 26px; color: var(--ink); }
+  .sb-time { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .sb-right { display: flex; align-items: center; gap: 7px; }
+  .sb-right svg { display: block; }
+  .sb-net { font-size: 11px; font-weight: 700; }
+  .phone__body { flex: 1; min-height: 0; position: relative; }
+  .screenwrap { position: absolute; inset: 0; }
+  @media (prefers-reduced-motion: no-preference) {
+    .screenwrap { animation: screenIn var(--dur-slow) var(--ease-out-soft); }
+  }
+  @keyframes screenIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+  .demo-tip { font-size: 12px; color: var(--text-secondary); background: var(--surface-card);
+    border: 1px solid var(--border-subtle); padding: 8px 15px; border-radius: var(--radius-pill);
+    box-shadow: var(--shadow-xs); text-align: center; }
+  .demo-tip b { color: var(--accent); font-variant-numeric: tabular-nums; }
+
+  /* ---- shared screen scaffold ---- */
+  .screen { height: 100%; display: flex; flex-direction: column; background: var(--surface-page); }
+  .screen__scroll { flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden; }
+  .screen__footer { flex-shrink: 0; display: flex; flex-direction: column; gap: var(--space-2);
+    padding: var(--space-4) var(--gutter-page) calc(var(--space-4) + 4px);
+    background: color-mix(in oklab, var(--surface-page) 86%, transparent);
+    backdrop-filter: blur(10px); border-top: 1px solid var(--border-subtle); }
+  .page { padding: var(--space-6) var(--gutter-page) var(--space-8);
+    display: flex; flex-direction: column; gap: var(--space-5); }
+  .footnote { font-size: var(--text-xs); color: var(--text-muted); text-align: center; margin: 0; line-height: 1.5; }
+
+  /* ---- app bar ---- */
+  .appbar { position: sticky; top: 0; z-index: 5;
+    background: color-mix(in oklab, var(--surface-page) 90%, transparent);
+    backdrop-filter: blur(10px); border-bottom: 1px solid var(--border-subtle); }
+  .appbar__top { height: 52px; display: flex; align-items: center; padding: 0 var(--space-3); }
+  .appbar__side { width: 40px; display: flex; }
+  .appbar__mark { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 700;
+    font-size: var(--text-md); letter-spacing: -0.02em; color: var(--text-primary); }
+  .appbar__mark span { color: var(--accent); }
+  .appbar__steps { padding: 2px var(--space-6) 14px; }
+  .iconbtn { width: 40px; height: 40px; border-radius: var(--radius-md); border: none; background: transparent;
+    color: var(--text-secondary); display: inline-flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: background var(--dur-fast) var(--ease-standard); }
+  .iconbtn:hover { background: var(--surface-hover); }
+
+  /* ---- intro ---- */
+  .intro__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-3xl);
+    line-height: 1.16; letter-spacing: -0.022em; color: var(--text-primary); margin: 4px 0 0; }
+  .intro__lead { font-size: var(--text-md); line-height: var(--leading-relaxed); color: var(--text-secondary); margin: 0; }
+  .intro__hero { margin-top: var(--space-1); }
+  .intro__herocap { color: #fff; font-size: var(--text-sm); font-weight: 600; letter-spacing: -0.01em;
+    text-shadow: 0 1px 10px rgba(20,14,8,0.55); }
+  .spaces { display: flex; flex-direction: column; gap: var(--space-2); }
+  .spacerow { display: flex; align-items: center; gap: var(--space-3); padding: var(--space-3) var(--space-4);
+    background: var(--surface-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); }
+  .spacerow__n { font-family: var(--font-display); font-weight: 700; color: var(--accent); font-size: var(--text-lg); width: 22px; text-align: center; }
+  .spacerow__body { flex: 1; min-width: 0; }
+  .spacerow__name { font-weight: 600; font-size: var(--text-base); color: var(--text-primary); }
+  .spacerow__line { font-size: var(--text-xs); color: var(--text-muted); margin-top: 1px; }
+  .spacerow__kind { font-size: var(--text-2xs); color: var(--text-muted); background: var(--surface-inset);
+    padding: 4px 9px; border-radius: var(--radius-pill); white-space: nowrap; }
+
+  /* ---- forms / space cards ---- */
+  .form { display: flex; flex-direction: column; gap: var(--space-4); }
+  .spacecards { display: flex; flex-direction: column; gap: var(--space-6); }
+
+  /* ---- complete ---- */
+  .complete { align-items: center; text-align: center; padding-top: var(--space-11); gap: var(--space-3); }
+  .complete__mark { width: 76px; height: 76px; border-radius: 50%; background: var(--success-surface);
+    color: var(--success); display: flex; align-items: center; justify-content: center; }
+  .complete__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl);
+    color: var(--text-primary); margin: 8px 0 0; letter-spacing: -0.02em; }
+  .complete__sub { font-size: var(--text-md); color: var(--text-secondary); margin: 0 0 var(--space-3); }
+  .complete__footer { }
+
+  /* ---- lookup ---- */
+  .lookup__title { font-family: var(--font-display); font-weight: 700; font-size: var(--text-2xl);
+    color: var(--text-primary); margin: 4px 0 0; letter-spacing: -0.02em; }
+  .lookup__meta { display: flex; align-items: center; gap: var(--space-3); }
+  .lookup__phone { font-size: var(--text-sm); color: var(--text-secondary); font-variant-numeric: tabular-nums; }
+  .lookup__list { display: flex; flex-direction: column; gap: var(--space-3); }
+  .lookupcard__head { display: flex; align-items: center; gap: var(--space-2); font-family: var(--font-display);
+    font-weight: 700; font-size: var(--text-lg); color: var(--text-primary); margin-bottom: var(--space-3); }
+  .lookupcard__n { color: var(--accent); }
+  .lookupcard__names { display: flex; flex-direction: column; gap: var(--space-3); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="AppHeader.jsx"></script>
+<script type="text/babel" src="IntroScreen.jsx"></script>
+<script type="text/babel" src="InfoScreen.jsx"></script>
+<script type="text/babel" src="SubmitScreen.jsx"></script>
+<script type="text/babel" src="CompleteScreen.jsx"></script>
+<script type="text/babel" src="LookupScreen.jsx"></script>
+
+<script type="text/babel">
+  const SEED = {
+    '01012345678': {
+      name: '김은혜', phone: '01012345678',
+      values: {
+        main:   { required: '은혜의 뜰', optional: '' },
+        chapel: { required: '청년마루', optional: '빛으로' },
+        family: { required: '처음자리', optional: '' },
+      },
+    },
+  };
+
+  function StatusBar() {
+    return (
+      <div className="statusbar">
+        <span className="sb-time">9:41</span>
+        <span className="sb-right">
+          <svg width="18" height="11" viewBox="0 0 18 11" fill="currentColor" aria-hidden="true">
+            <rect x="0"  y="7" width="3" height="4" rx="1" /><rect x="5"  y="5" width="3" height="6" rx="1" />
+            <rect x="10" y="3" width="3" height="8" rx="1" /><rect x="15" y="0" width="3" height="11" rx="1" />
+          </svg>
+          <span className="sb-net">5G</span>
+          <svg width="26" height="12" viewBox="0 0 26 12" fill="none" aria-hidden="true">
+            <rect x="0.5" y="0.5" width="22" height="11" rx="3" stroke="currentColor" opacity="0.4" />
+            <rect x="2" y="2" width="17" height="8" rx="1.5" fill="currentColor" />
+            <rect x="24" y="4" width="2" height="4" rx="1" fill="currentColor" opacity="0.5" />
+          </svg>
+        </span>
+      </div>
+    );
+  }
+
+  function PhoneFrame({ children }) {
+    return (
+      <div className="phone">
+        <div className="phone__screen">
+          <StatusBar />
+          <div className="phone__body">{children}</div>
+        </div>
+      </div>
+    );
+  }
+
+  function App() {
+    const [screen, setScreen] = React.useState('intro');
+    const [applicant, setApplicant] = React.useState(null);
+    const [duplicate, setDuplicate] = React.useState(null);
+    const [current, setCurrent] = React.useState(null);
+    const [subs, setSubs] = React.useState(SEED);
+
+    const goHome = () => { setScreen('intro'); setApplicant(null); setDuplicate(null); setCurrent(null); };
+    const infoNext = ({ name, phone }) => {
+      if (subs[phone]) { setDuplicate(subs[phone]); return; }
+      setApplicant({ name, phone }); setDuplicate(null); setScreen('submit');
+    };
+    const doSubmit = (values) => {
+      const sub = { ...applicant, values };
+      setSubs((p) => ({ ...p, [applicant.phone]: sub }));
+      setCurrent(sub); setScreen('complete');
+    };
+    const openLookup = (sub) => { setCurrent(sub); setScreen('lookup'); };
+
+    let node = null;
+    if (screen === 'intro')    node = <IntroScreen onStart={() => setScreen('info')} />;
+    else if (screen === 'info') node = <InfoScreen onBack={goHome} onNext={infoNext}
+      onLookup={openLookup} onDirty={() => setDuplicate(null)} duplicate={duplicate} />;
+    else if (screen === 'submit') node = <SubmitScreen onBack={() => setScreen('info')} onSubmit={doSubmit} />;
+    else if (screen === 'complete') node = <CompleteScreen applicant={current}
+      onLookup={() => openLookup(current)} onHome={goHome} />;
+    else if (screen === 'lookup') node = <LookupScreen submission={current} onClose={goHome} />;
+
+    return <PhoneFrame><div className="screenwrap" key={screen}>{node}</div></PhoneFrame>;
+  }
+
+  ReactDOM.createRoot(document.getElementById('root')).render(
+    <div className="stage">
+      <App />
+      <div className="demo-tip">데모 · 이미 신청된 번호 <b>010-1234-5678</b> 로 중복·조회 흐름을 체험해 보세요</div>
+    </div>
+  );
+</script>
+</body>
+</html>

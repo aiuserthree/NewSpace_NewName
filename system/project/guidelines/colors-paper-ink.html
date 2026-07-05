@@ -1,0 +1,27 @@
+<!-- @dsCard group="Colors" viewport="700x170" name="Paper & Ink" subtitle="Core surfaces and text — warm ivory, not white; warm black, not #000" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 18px; background: var(--surface-page); font-family: var(--font-sans); }
+  .row { display: flex; gap: 10px; }
+  .sw { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .chip { height: 78px; border-radius: 12px; box-shadow: inset 0 0 0 1px rgba(52,40,22,0.08); display: flex; align-items: flex-end; padding: 10px; }
+  .chip.dark { color: #F7F1E8; }
+  .tag { font-size: 11px; font-weight: 600; }
+  .name { font-size: 11px; font-weight: 600; color: var(--text-secondary); }
+  .hex { font-size: 10px; color: var(--text-muted); text-transform: uppercase; font-variant-numeric: tabular-nums; }
+</style></head>
+<body>
+<div class="row" id="row"></div>
+<script>
+  const items = [
+    ['--paper','#F7F1E8','paper',0],['--paper-deep','#F1E9DA','paper-deep',0],
+    ['--surface','#FFFDF9','surface',0],['--surface-inset','#EFE6D6','surface-inset',0],
+    ['--ink','#241E14','ink',1],['--ink-soft','#574B39','ink-soft',1]
+  ];
+  document.getElementById('row').innerHTML = items.map(([t,h,label,dark]) =>
+    `<div class="sw"><div class="chip${dark?' dark':''}" style="background:var(${t})"><span class="tag">Aa 가</span></div>
+     <div class="name">${label}</div><div class="hex">${h}</div></div>`).join('');
+</script>
+</body></html>

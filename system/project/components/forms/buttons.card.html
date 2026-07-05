@@ -1,0 +1,52 @@
+<!-- @dsCard group="Components" viewport="700x340" name="Button" subtitle="primary · secondary · ghost · soft — sizes, icons, states" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .row { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+  .lbl { width: 74px; font: 600 11px var(--font-sans); letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Button } = window.DesignSystem_60a1b7;
+  function Demo() {
+    return (
+      <div>
+        <div className="row"><span className="lbl">Variants</span>
+          <Button size="md">참여 시작</Button>
+          <Button size="md" variant="secondary" iconLeft="phone">내용 확인</Button>
+          <Button size="md" variant="ghost">닫기</Button>
+          <Button size="md" variant="soft" iconLeft="share">공유하기</Button>
+        </div>
+        <div className="row"><span className="lbl">Sizes</span>
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg" iconRight="arrow-right">Large</Button>
+        </div>
+        <div className="row"><span className="lbl">States</span>
+          <Button size="md" disabled>Disabled</Button>
+          <Button size="md" loading>제출 중</Button>
+          <Button size="md" variant="secondary" disabled>Disabled</Button>
+        </div>
+        <div className="row"><span className="lbl">Full</span>
+          <div style={{ flex: 1, minWidth: 260 }}>
+            <Button fullWidth iconRight="arrow-right">제출하기</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!-- @dsCard group="Type" viewport="700x180" name="Weights & Numerals" subtitle="Pretendard 400–700 + tabular figures for phone numbers" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 22px 24px; background: var(--surface-page); font-family: var(--font-sans); color: var(--text-primary); }
+  .weights { display: flex; gap: 26px; flex-wrap: wrap; margin-bottom: 20px; }
+  .w { display: flex; flex-direction: column; gap: 3px; }
+  .w span:first-child { font-size: 24px; letter-spacing: -0.01em; }
+  .w span:last-child { font-size: 11px; color: var(--text-muted); }
+  .nums { display: flex; gap: 28px; align-items: baseline; }
+  .nums b { font-size: 22px; font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+  .nums span { font-size: 11px; color: var(--text-muted); }
+</style></head>
+<body>
+  <div class="weights">
+    <div class="w"><span style="font-weight:400">공간 이름</span><span>Regular · 400</span></div>
+    <div class="w"><span style="font-weight:500">공간 이름</span><span>Medium · 500</span></div>
+    <div class="w"><span style="font-weight:600">공간 이름</span><span>SemiBold · 600</span></div>
+    <div class="w"><span style="font-weight:700">공간 이름</span><span>Bold · 700</span></div>
+  </div>
+  <div class="nums">
+    <b>010-1234-5678</b><span>tabular-nums · .ds-numeric — used for phone numbers</span>
+  </div>
+</body></html>

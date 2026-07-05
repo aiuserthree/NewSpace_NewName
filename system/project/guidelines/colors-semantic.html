@@ -1,0 +1,29 @@
+<!-- @dsCard group="Colors" viewport="700x180" name="Semantic" subtitle="Warm-tuned success · warning · danger · info (surface + foreground)" -->
+<!DOCTYPE html>
+<html lang="ko"><head><meta charset="utf-8" />
+<link rel="stylesheet" href="../styles.css" />
+<style>
+  body { margin: 0; padding: 18px; background: var(--surface-page); font-family: var(--font-sans); }
+  .row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .cell { border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px; min-height: 96px; }
+  .lead { font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+  .sub { font-size: 11px; line-height: 1.5; opacity: 0.9; }
+  .solid { height: 8px; border-radius: 999px; margin-top: auto; }
+  .name { font-size: 10px; color: var(--text-muted); font-weight: 600; margin-top: 2px; }
+</style></head>
+<body>
+<div class="row">
+  <div class="cell" style="background:var(--success-surface);color:var(--success-fg)">
+    <span class="lead">완료</span><span class="sub">제출이 완료되었습니다</span>
+    <div class="solid" style="background:var(--success)"></div><span class="name">success</span></div>
+  <div class="cell" style="background:var(--warning-surface);color:var(--warning-fg)">
+    <span class="lead">확인</span><span class="sub">입력하지 않은 공간이 있어요</span>
+    <div class="solid" style="background:var(--warning)"></div><span class="name">warning</span></div>
+  <div class="cell" style="background:var(--danger-surface);color:var(--danger-fg)">
+    <span class="lead">오류</span><span class="sub">번호 형식을 확인해 주세요</span>
+    <div class="solid" style="background:var(--danger)"></div><span class="name">danger</span></div>
+  <div class="cell" style="background:var(--info-surface);color:var(--info-fg)">
+    <span class="lead">안내</span><span class="sub">이미 신청하신 분입니다</span>
+    <div class="solid" style="background:var(--info)"></div><span class="name">info</span></div>
+</div>
+</body></html>

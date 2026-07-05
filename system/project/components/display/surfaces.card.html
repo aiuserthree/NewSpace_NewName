@@ -1,0 +1,49 @@
+<!-- @dsCard group="Components" viewport="700x420" name="Card · SectionHeader · Badge" subtitle="Surfaces, section headers and status pills" -->
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../styles.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="../../_ds_bundle.js"></script>
+<style>
+  body { margin: 0; padding: 24px; background: var(--surface-page); }
+  .wrap { display: grid; grid-template-columns: 1.3fr 1fr; gap: 16px; align-items: start; }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+  .stack { display: flex; flex-direction: column; gap: 12px; }
+  .mini { font: 600 11px var(--font-sans); letter-spacing: 0.06em; color: var(--text-muted); }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+  const { Card, SectionHeader, Badge } = window.DesignSystem_60a1b7;
+  function Demo() {
+    return (
+      <div className="wrap">
+        <Card padding="lg">
+          <SectionHeader numeral="②" eyebrow="소예배실 · 사진" title="소예배실"
+            description="청년과 청소년을 위한 액티브한 공간입니다. 어울리는 이름을 지어주세요." />
+          <div className="badges">
+            <Badge variant="accent">필수</Badge>
+            <Badge variant="neutral">선택</Badge>
+            <Badge variant="success" icon="check">제출 완료</Badge>
+            <Badge variant="info" icon="info">이미 신청</Badge>
+            <Badge variant="outline">읽기 전용</Badge>
+          </div>
+        </Card>
+        <div className="stack">
+          <Card variant="raised" padding="md"><span className="mini">RAISED · soft shadow</span></Card>
+          <Card variant="flat" padding="md"><span className="mini">FLAT · hairline border</span></Card>
+          <Card variant="sunken" padding="md"><span className="mini">SUNKEN · inset tray</span></Card>
+        </div>
+      </div>
+    );
+  }
+  ReactDOM.createRoot(document.getElementById('root')).render(<Demo />);
+</script>
+</body>
+</html>

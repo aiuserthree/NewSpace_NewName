@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>공간 이름 공모전 · 이름 제출</title>
+<link rel="stylesheet" href="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/styles.css" />
+<link rel="stylesheet" href="assets/site.css" />
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="_ds/design-system-60a1b7da-f1a7-4c65-8d1d-d61d571d9d75/_ds_bundle.js"></script>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel" src="assets/shared.jsx"></script>
+<script type="text/babel">
+/* P2 — 이름 아이디어 제출 (스크롤형 단일 페이지). 세 공간의 이름을
+   한 화면에서 입력(각 필수1 + 선택1)받아 최종 제출한다.
+   각 공간의 사진은 커버를 누르면 확대되어 여러 장을 넘겨볼 수 있다. */
+const { Button, Notice, SectionHeader, Card, ImageFrame, TextField, Icon } = window.DesignSystem_60a1b7;
+
+const SUBMIT_SPACES = [
+  { key: 'main', n: '①', name: '본당', kind: '신축 · 조감도',
+    desc: '새로 지어질 본당입니다. 조감도를 보며 우리 공동체가 오래 부를 이름을 상상해 보세요.',
+    photos: [
+      { label: '본당 정면 조감도' },
+      { label: '본당 측면 조감도' },
+      { label: '본당 내부 투시도' },
+    ] },
+  { key: 'chapel', n: '②', name: '소예배실', kind: '사진',
+    desc: '청년과 청소년을 위한 액티브한 공간입니다. 활기가 느껴지는 이름을 지어주세요.',
+    photos: [
+      { label: '소예배실 전경' },
+      { label: '소예배실 무대' },
+    ] },
+  { key: 'family', n: '③', name: '새가족부실', kind: '사진',
+    desc: '처음 오신 분들을 따뜻하게 맞이하고 안내하는 공간입니다.',
+    photos: [
+      { label: '새가족부실 입구' },
+      { label: '새가족부실 내부' },
+    ] },
+];
+
+const SUB_LABEL = '이미지를 준비 중이에요';
+
+/* 공간별 카드 — 사진 커버(클릭 시 확대) + 설명 + 이름 입력(필수1 + 선택1) */
+function SpaceBlock({ space, vals, warn, onField, onOpen }) {
+  const req = (vals && vals.required) || '';
+  const opt = (vals && vals.optional) || '';
+  const cover = space.photos[0];
+  return (
+    <Card variant="raised" padding="none" className="ds-spacecard">
+      <div className="photobtn" role="button" tabIndex={0}
+        aria-label={`${space.name} 사진 확대해서 보기`}
+        onClick={() => onOpen(0)}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onOpen(0); } }}>
+        <ImageFrame src={cover.src} ratio="4 / 3" radius="none" scrim
+          label={cover.label} sublabel={cover.sublabel || SUB_LABEL} alt={space.name}>
+          <div className="ds-spacecard__topbar">
+            <span className="ds-spacecard__num">{space.n}</span>
+            <span className="ds-spacecard__kind">{space.kind}</span>
+          </div>
+          <h3 className="ds-spacecard__name">{space.name}</h3>
+        </ImageFrame>
+        <span className="photochip"><Icon name="image" size={14} />{space.photos.length}장 · 눌러서 확대</span>
+      </div>
+
+      <div className="ds-spacecard__body">
+        <p className="ds-spacecard__desc">{space.desc}</p>
+        <div className="ds-spacecard__tray">
+          <div className="ds-spacecard__tray-head">
+            <span>이름 제안</span><span className="ds-spacecard__tray-line" />
+          </div>
+          <TextField label="이름" required placeholder="이름을 제안해 주세요"
+            value={req} error={warn && !req.trim() ? '이름을 제안해 주세요' : undefined}
+            onChange={(e) => onField('required', e.target.value)} />
+          <TextField label="추가 이름" optional placeholder="한 개 더 제안할 수 있어요 (선택)"
+            value={opt} onChange={(e) => onField('optional', e.target.value)} />
+        </div>
+      </div>
+    </Card>
+  );
+}
+
+/* 라이트박스 — 사진을 크게 보고 이전/다음·썸네일·키보드로 넘겨본다 */
+function Lightbox({ space, index, onIndex, onClose }) {
+  const photos = space.photos;
+  const n = photos.length;
+  const go = (d) => onIndex((index + d + n) % n);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      else if (e.key === 'ArrowRight') go(1);
+      else if (e.key === 'ArrowLeft') go(-1);
+    };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  });
+
+  const cur = photos[index];
+  return (
+    <div className="lightbox" role="dialog" aria-modal="true"
+      aria-label={`${space.name} 사진`} onClick={onClose}>
+      <div className="lightbox__bar" onClick={(e) => e.stopPropagation()}>
+        <div className="lightbox__title"><span className="lightbox__n">{space.n}</span>{space.name}</div>
+        <div className="lightbox__count">{index + 1} / {n}</div>
+        <button type="button" className="lightbox__close" onClick={onClose} aria-label="닫기">
+          <Icon name="x" size={22} />
+        </button>
+      </div>
+
+      <div className="lightbox__stage" onClick={(e) => e.stopPropagation()}>
+        {n > 1 && (
+          <button type="button" className="lightbox__nav lightbox__nav--prev"
+            onClick={() => go(-1)} aria-label="이전 사진"><Icon name="arrow-left" size={24} /></button>
+        )}
+        <figure className="lightbox__figure">
+          <div className="lightbox__img">
+            {cur.src
+              ? <img src={cur.src} alt={cur.label} />
+              : (
+                <div className="lightbox__ph">
+                  <Icon name="image" size={40} />
+                  <span className="lightbox__ph-label">{cur.label}</span>
+                  <span className="lightbox__ph-sub">{cur.sublabel || SUB_LABEL}</span>
+                </div>
+              )}
+          </div>
+          <figcaption className="lightbox__cap">{cur.label}</figcaption>
+        </figure>
+        {n > 1 && (
+          <button type="button" className="lightbox__nav lightbox__nav--next"
+            onClick={() => go(1)} aria-label="다음 사진"><Icon name="arrow-right" size={24} /></button>
+        )}
+      </div>
+
+      {n > 1 && (
+        <div className="lightbox__thumbs" onClick={(e) => e.stopPropagation()}>
+          {photos.map((p, i) => (
+            <button type="button" key={i} aria-current={i === index}
+              className={'lightbox__thumb' + (i === index ? ' is-active' : '')}
+              onClick={() => onIndex(i)} aria-label={`${i + 1}번째 사진 보기`}>
+              {p.src ? <img src={p.src} alt="" /> : <Icon name="image" size={16} />}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SubmitPage() {
+  const [vals, setVals] = React.useState({});
+  const [warn, setWarn] = React.useState(false);
+  const [lb, setLb] = React.useState(null);      // { si, pi } 또는 null
+  const applicant = React.useMemo(() => Contest.getApplicant(), []);
+  const setField = (key, slot, v) => setVals((p) => ({ ...p, [key]: { ...p[key], [slot]: v } }));
+
+  const submit = () => {
+    const missing = SUBMIT_SPACES.some((s) => !((vals[s.key] && vals[s.key].required || '').trim()));
+    if (missing) {
+      setWarn(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+    const appl = applicant || { name: '', phone: '' };
+    const sub = { ...appl, values: vals, submittedAt: Date.now() };
+    if (appl.phone) Contest.saveSub(sub);
+    Contest.setJSON(Contest.CUR_KEY, sub);
+    window.location.href = '04-complete.html';
+  };
+
+  return (
+    <div className="site">
+      <SiteHeader back="02-info.html" steps={['신청자 정보', '이름 제출']} current={1} />
+      <main className="site__main">
+        <div className="col col--submit">
+          <SectionHeader eyebrow="STEP 2" title="이름을 지어주세요"
+            description="각 공간별 1개는 필수, 1개는 선택으로 제안할 수 있어요. 사진을 누르면 크게 볼 수 있어요." />
+
+          {warn && (
+            <Notice variant="warning" title="아직 비어 있는 공간이 있어요">
+              각 공간별 이름 1개는 필수예요. 붉게 표시된 칸을 확인해 주세요.
+            </Notice>
+          )}
+
+          <div className="spacecards">
+            {SUBMIT_SPACES.map((s, i) => (
+              <SpaceBlock key={s.key} space={s} vals={vals[s.key]} warn={warn}
+                onField={(slot, v) => setField(s.key, slot, v)}
+                onOpen={(pi) => setLb({ si: i, pi })} />
+            ))}
+          </div>
+
+          <div className="actionbar">
+            <Button fullWidth iconRight="check" onClick={submit}>제출하기</Button>
+            <p className="footnote">제출 후에는 수정할 수 없어요. 다시 한번 확인해 주세요.</p>
+          </div>
+        </div>
+      </main>
+
+      {lb && (
+        <Lightbox space={SUBMIT_SPACES[lb.si]} index={lb.pi}
+          onIndex={(pi) => setLb((s) => ({ ...s, pi }))}
+          onClose={() => setLb(null)} />
+      )}
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<SubmitPage />);
+</script>
+</body>
+</html>
