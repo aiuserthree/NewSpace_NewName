@@ -5,13 +5,5 @@
   "outputDirectory": "handoff/project",
   "rewrites": [
     { "source": "/", "destination": "/01-intro.html" }
-  ],
-  "headers": [
-    {
-      "source": "/assets/(.*)",
-      "headers": [
-        { "key": "Content-Type", "value": "application/javascript; charset=utf-8" }
-      ]
-    }
   ]
 }
